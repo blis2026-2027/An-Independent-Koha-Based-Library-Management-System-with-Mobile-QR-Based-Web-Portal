@@ -1,0 +1,1 @@
+A "Systems Analysis & Design" Project designed by Kyla Paitan and Nicoline Radones, BLIS-III Students of Silliman University (2026-2027). This proposed library management system was made with the needs of the NORSU Siaton Library in mind, with permission from its librarian. No copyright infringement is intended.
