@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NORSU Siaton Campus Library Hub</title>
+  
+  <!-- Google Fonts: Inter (Body) & Outfit (Headings) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            norsuBlue: '#002BFA',
+            norsuDarkBlue: '#001EB8',
+            norsuYellow: '#FFC800',
+            siatonGreen: '#064e3b',
+            siatonGreenHover: '#04382a',
+            kohaGreen: '#adc653'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased">
+
+  <!-- ==================== TOP NAVIGATION HEADER ==================== -->
+  <header class="bg-norsuBlue text-white sticky top-0 z-50 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-2">
+      
+      <!-- Logo Branding -->
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+        <div class="w-9 h-9 bg-white p-0.5 rounded flex items-center justify-center shrink-0">
+          <img src="https://norsu.edu.ph/favicon.ico" alt="NORSU Logo" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='https://via.placeholder.com/36?text=N';">
+        </div>
+        <div>
+          <span class="font-heading text-base sm:text-xl font-extrabold tracking-tight uppercase block leading-none">NORSU LIBRARY</span>
+          <span class="text-[10px] text-norsuYellow font-semibold tracking-wider block">SIATON CAMPUS HUB</span>
+        </div>
+      </div>
+
+      <!-- Desktop Nav Items -->
+      <nav class="hidden md:flex items-center gap-3 lg:gap-4 text-xs font-medium">
+        <button onclick="switchTab('home')" id="nav-home" class="hover:text-norsuYellow transition border-b-2 border-norsuYellow text-norsuYellow font-bold pb-0.5">Home</button>
+        <button onclick="switchTab('about')" id="nav-about" class="hover:text-norsuYellow transition border-b-2 border-transparent pb-0.5">About Us</button>
+        <button onclick="switchTab('policy')" id="nav-policy" class="hover:text-norsuYellow transition border-b-2 border-transparent pb-0.5">Library Policy</button>
+        <button onclick="switchTab('opac')" id="nav-opac" class="hover:text-norsuYellow transition border-b-2 border-transparent pb-0.5">OPAC Search</button>
+        <button onclick="switchTab('scan-request')" id="nav-scan-request" class="hover:text-norsuYellow transition border-b-2 border-transparent pb-0.5">Scan Request</button>
+        <button onclick="switchTab('account')" id="nav-account" class="hover:text-norsuYellow transition border-b-2 border-transparent pb-0.5">My Account</button>
+        <button onclick="switchTab('login')" id="nav-login" class="bg-norsuYellow text-slate-900 font-bold px-3 py-1 rounded hover:bg-yellow-400 transition">Patron Login</button>
+        <button onclick="openAdminModal()" id="nav-admin" class="bg-emerald-700 text-white font-bold px-3 py-1 rounded hover:bg-emerald-800 transition flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          <span>Admin Portal</span>
+        </button>
+      </nav>
+
+      <!-- Mobile Hamburger Button -->
+      <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-white hover:text-norsuYellow">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden bg-norsuDarkBlue border-t border-norsuYellow/20 px-4 py-3 space-y-2 text-xs font-semibold">
+      <button onclick="switchTab('home'); toggleMobileMenu();" class="block w-full text-left py-1 text-white hover:text-norsuYellow">Home</button>
+      <button onclick="switchTab('about'); toggleMobileMenu();" class="block w-full text-left py-1 text-white hover:text-norsuYellow">About Us</button>
+      <button onclick="switchTab('policy'); toggleMobileMenu();" class="block w-full text-left py-1 text-white hover:text-norsuYellow">Library Policy</button>
+      <button onclick="switchTab('opac'); toggleMobileMenu();" class="block w-full text-left py-1 text-white hover:text-norsuYellow">OPAC Search</button>
+      <button onclick="switchTab('scan-request'); toggleMobileMenu();" class="block w-full text-left py-1 text-white hover:text-norsuYellow">Scan Request</button>
+      <button onclick="switchTab('account'); toggleMobileMenu();" class="block w-full text-left py-1 text-white hover:text-norsuYellow">My Account</button>
+      <div class="pt-2 flex flex-col gap-2">
+        <button onclick="switchTab('login'); toggleMobileMenu();" class="w-full text-center bg-norsuYellow text-slate-900 py-2 rounded font-bold">Patron Login</button>
+        <button onclick="openAdminModal(); toggleMobileMenu();" class="w-full text-center bg-emerald-700 text-white py-2 rounded font-bold flex items-center justify-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          <span>Librarian Admin Portal</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Offline Local Server Network Banner -->
+  <div class="bg-emerald-900 text-emerald-100 text-[11px] py-1 px-4 text-center font-mono flex items-center justify-center gap-2">
+    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+    <span>NORSU Siaton Dedicated Local Network Server (Active LAN Node)</span>
+  </div>
+
+  <!-- ==================== MAIN CONTENT AREA ==================== -->
+  <main class="flex-grow w-full">
+
+    <!-- ==================== TAB 1: HERO / HOME ==================== -->
+    <section id="sec-home" class="relative bg-norsuBlue text-white min-h-[480px] flex items-center overflow-hidden py-12">
+      <div class="absolute inset-0 bg-gradient-to-r from-norsuBlue via-norsuBlue/90 to-emerald-900 opacity-95"></div>
+
+      <div class="max-w-7xl mx-auto px-6 sm:px-12 relative z-10 w-full grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+        
+        <!-- Left Hero Content -->
+        <div class="md:col-span-7 space-y-5">
+          <div class="inline-block bg-norsuYellow text-slate-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+            Siaton Campus Library
+          </div>
+          <h1 class="font-heading text-3xl sm:text-5xl font-black tracking-tight uppercase leading-tight">
+            Knowledge within reach, <span class="text-norsuYellow">on campus.</span>
+          </h1>
+
+          <p class="text-slate-100 text-xs sm:text-base leading-relaxed max-w-lg">
+            Serving the academic community through our local Koha collection of 7,000+ volumes, digital databases, and email document delivery.
+          </p>
+
+          <div class="pt-2 flex flex-wrap gap-3">
+            <button onclick="switchTab('opac')" class="bg-norsuYellow text-slate-900 hover:bg-yellow-400 font-bold px-6 py-2.5 rounded-md text-xs sm:text-sm uppercase tracking-wider transition shadow-md">
+              Access Koha OPAC
+            </button>
+            <button onclick="switchTab('scan-request')" class="border-2 border-white text-white hover:bg-white hover:text-norsuBlue font-bold px-6 py-2.5 rounded-md text-xs sm:text-sm uppercase tracking-wider transition">
+              Request Document Scan
+            </button>
+          </div>
+        </div>
+
+        <!-- Right QR Access Box -->
+        <div class="md:col-span-5 flex justify-center md:justify-end">
+          <div class="bg-white text-slate-900 p-6 rounded-xl shadow-2xl border-4 border-norsuYellow max-w-xs text-center space-y-3">
+            <span class="text-xs font-bold text-emerald-800 uppercase tracking-wider block">Mobile QR Access Portal</span>
+            <div class="bg-slate-100 p-4 rounded-lg flex justify-center items-center">
+              <svg class="w-32 h-32 sm:w-36 sm:h-36 text-slate-800" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M2 2h8v8H2V2zm2 2v4h4V4H4zm11-2h7v7h-7V2zm2 2v3h3V4h-3zM2 14h8v8H2v-8zm2 2v4h4v-4H4zm13-2h1v2h-1v-2zm1 2h2v1h-2v-1zm-2 2h1v3h-1v-3zm3 0h3v1h-3v-1zm1 2h2v1h-2v-1zm-4 0h1v1h-1v-1zm-2 1h1v1h-1v-1zm4 0h1v1h-1v-1zm-2 1h3v1h-3v-1z"/>
+              </svg>
+            </div>
+            <p class="text-[11px] text-slate-600">Scan code on mobile devices to search the library catalog or submit document scan requests on campus.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: ABOUT US ==================== -->
+    <section id="sec-about" class="hidden max-w-7xl mx-auto px-6 py-12 space-y-12">
+      <div class="border-b-4 border-norsuBlue pb-4">
+        <h2 class="font-heading text-2xl sm:text-3xl font-black text-slate-900 uppercase">About NORSU Siaton Campus Library</h2>
+        <p class="text-xs sm:text-sm text-slate-600 font-medium">Head of the Library: Mr. Charlton M. Raga</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        <div class="bg-white p-6 rounded-lg border border-slate-200 shadow-sm space-y-3">
+          <h3 class="font-heading text-lg sm:text-xl font-bold text-norsuBlue border-b pb-2">History of Siaton Campus Library</h3>
+          <p class="text-xs text-slate-700 leading-relaxed">
+            In 1997, through SB Resolution headed by municipal mayor Teopisto F. Yap, Siaton Community College was established under Mr. Licerio T. Napao at the Old District Engineering Office in Brgy. 3, Poblacion. The library began with two shelves and fewer than 100 donated books, led by Eleuterio Futalan.
+          </p>
+          <p class="text-xs text-slate-700 leading-relaxed">
+            By 1991, the school transferred to the Municipal Motorpool Building (its current location). By virtue of <strong>Republic Act No. 9299</strong>, CVPC was converted into Negros Oriental State University (NORSU), integrating Siaton Community College as NORSU Siaton Campus under University President Dr. Henry A. Sojor.
+          </p>
+          <p class="text-xs text-slate-700 leading-relaxed">
+            Today, the library holds <strong>7,000 books</strong>, 10 periodical subscriptions, 20 computer stations, and online e-journal/e-book subscriptions.
+          </p>
+        </div>
+
+        <div class="space-y-6">
+          <div class="bg-norsuBlue text-white p-6 rounded-lg shadow-sm space-y-3">
+            <h3 class="font-heading text-lg sm:text-xl font-bold text-norsuYellow border-b border-norsuYellow/30 pb-2">Library Mission</h3>
+            <p class="text-xs leading-relaxed">
+              To make available and deliver information resources in all formats to members of the academic community, ensuring knowledge preservation through collection building, resource access, and academic program support.
+            </p>
+          </div>
+
+          <div class="bg-slate-100 p-6 rounded-lg border border-slate-200 space-y-3">
+            <h3 class="font-heading text-base font-bold text-slate-800">Organizational Structure & Staffing</h3>
+            <ul class="list-disc list-inside text-xs text-slate-700 space-y-1">
+              <li><strong>Campus Librarian:</strong> Mr. Charlton M. Raga (Professional Librarian)</li>
+              <li><strong>Technical Services Division:</strong> Job Order (JO) Personnel</li>
+              <li><strong>User Services Division:</strong> Job Order (JO) Personnel</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: GENERAL LIBRARY POLICY ==================== -->
+    <section id="sec-policy" class="hidden max-w-7xl mx-auto px-6 py-12 space-y-8">
+      <div class="border-b-4 border-norsuBlue pb-2">
+        <h2 class="font-heading text-2xl sm:text-3xl font-extrabold text-slate-900">Official Library Policies & Borrowing Rules</h2>
+        <p class="text-xs text-slate-600">Established rules for campus students, faculty, and external visitors</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-white p-6 rounded shadow-sm border border-slate-200 space-y-4">
+          <h3 class="font-heading font-bold text-norsuBlue text-lg">General House Rules</h3>
+          <ul class="list-disc list-inside text-xs text-slate-700 space-y-2 leading-relaxed">
+            <li><strong>Entry & ID:</strong> Open to all students and faculty upon presenting a valid ID card.</li>
+            <li><strong>Inspection:</strong> Personal bags and belongings must be presented for exit inspection.</li>
+            <li><strong>Environment:</strong> Quiet atmosphere and cleanliness must be observed at all times.</li>
+            <li><strong>External Researchers:</strong> In-house access permitted upon prior clearance from head librarian. Physical borrowing is prohibited; requested materials are provided via scanned copies sent to email or Messenger.</li>
+          </ul>
+        </div>
+
+        <div class="bg-slate-900 text-white p-6 rounded shadow-md space-y-4">
+          <h3 class="font-heading font-bold text-norsuYellow text-lg">Borrowing & Fines Policy</h3>
+          <ul class="space-y-3 text-xs text-slate-200">
+            <li class="border-b border-slate-800 pb-2">
+              <strong class="text-norsuYellow block">Novels & Fiction Collection:</strong>
+              Allowed for home borrowing for up to one (1) week.
+            </li>
+            <li class="border-b border-slate-800 pb-2">
+              <strong class="text-norsuYellow block">Textbooks & Academic References:</strong>
+              Physical borrowing is not permitted for students or faculty. Digital chapter scans are provided.
+            </li>
+            <li>
+              <strong class="text-norsuYellow block">Compassionate Fine-Free Policy:</strong>
+              No overdue fines are charged to encourage student reading and research engagement.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: KOHA OPAC SEARCH INTERFACE ==================== -->
+    <section id="sec-opac" class="hidden max-w-7xl mx-auto px-6 py-8 space-y-6">
+      <div class="bg-slate-100 border-l-4 border-emerald-600 p-4 rounded-r flex flex-wrap justify-between items-center gap-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <h2 class="font-heading text-lg font-bold text-slate-900">Koha Public Access Catalog (OPAC)</h2>
+            <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded">LAN Server Node</span>
+          </div>
+          <p class="text-xs text-slate-600 mt-0.5">Below is the live Koha Library Catalog search interface hosted on the Siaton campus network.</p>
+        </div>
+        <button onclick="openAdminModal()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-4 py-2 rounded transition flex items-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          <span>Staff Login (Librarians)</span>
+        </button>
+      </div>
+
+      <!-- OPAC CONTAINER INPIRED BY IMAGE 2 -->
+      <div class="bg-slate-100 border-2 border-slate-300 rounded-lg shadow-lg overflow-hidden font-sans">
+        <!-- OPAC Search Banner Header -->
+        <div class="bg-blue-600 text-white p-6 shadow-md">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex items-center space-x-3 mb-4">
+                    <span class="text-3xl font-extrabold tracking-wide font-serif italic">koha</span>
+                    <span class="text-xs border-l border-blue-400 pl-3 text-blue-100">NORSU Siaton Public Access Catalog</span>
+                </div>
+                <!-- Search Controls Bar -->
+                <div class="flex flex-wrap md:flex-nowrap gap-2 bg-white p-2 rounded shadow text-gray-800">
+                    <select class="border border-gray-300 rounded px-2 py-1 text-xs bg-gray-50 focus:outline-none">
+                        <option>Library Catalog</option>
+                        <option>Title</option>
+                        <option>Author</option>
+                        <option>Subject</option>
+                    </select>
+                    <input type="text" id="koha-global-input" value="marine ecology" placeholder="Search catalog..." class="flex-1 border border-gray-300 rounded px-3 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500">
+                    <button onclick="simulateKohaSearch()" class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-1 text-xs rounded font-medium">Search</button>
+                    <button class="bg-lime-500 hover:bg-lime-600 text-slate-900 px-3 py-1 text-xs rounded font-medium flex items-center space-x-1">
+                        <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+                        <span>Cart</span>
+                    </button>
+                    <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-xs rounded font-medium">Lists ▾</button>
+                </div>
+                <div class="flex space-x-4 text-xs text-blue-100 mt-2">
+                    <a href="#" class="hover:underline">Advanced Search</a>
+                    <a href="#" class="hover:underline">Tag Cloud</a>
+                    <a href="#" class="hover:underline">Most Popular</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Results & Filters Layout -->
+        <div class="max-w-6xl w-full mx-auto p-4 flex flex-col md:flex-row gap-6">
+            
+            <!-- Left Sidebar: Refine Search Facets -->
+            <aside class="w-full md:w-64 bg-white p-4 border border-gray-200 rounded text-sm h-fit shadow-sm">
+                <h3 class="font-bold text-gray-700 border-b pb-2 mb-3">Refine your search</h3>
+                
+                <div class="mb-4">
+                    <h4 class="font-semibold text-xs text-gray-500 uppercase tracking-wider mb-1">Availability</h4>
+                    <ul class="space-y-1 text-blue-600 text-xs">
+                        <li><a href="#" class="hover:underline">Limit to currently available (3)</a></li>
+                    </ul>
+                </div>
+
+                <div class="mb-4">
+                    <h4 class="font-semibold text-xs text-gray-500 uppercase tracking-wider mb-1">Libraries</h4>
+                    <ul class="space-y-1 text-blue-600 text-xs">
+                        <li><a href="#" class="hover:underline">NORSU Siaton Campus (4)</a></li>
+                    </ul>
+                </div>
+
+                <div class="mb-4">
+                    <h4 class="font-semibold text-xs text-gray-500 uppercase tracking-wider mb-1">Topics</h4>
+                    <ul class="space-y-1 text-blue-600 text-xs">
+                        <li><a href="#" class="hover:underline">Ecology & Conservation (3)</a></li>
+                        <li><a href="#" class="hover:underline">Marine Ecosystems (2)</a></li>
+                        <li><a href="#" class="hover:underline">Fisheries (1)</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold text-xs text-gray-500 uppercase tracking-wider mb-1">Authors</h4>
+                    <ul class="space-y-1 text-blue-600 text-xs">
+                        <li><a href="#" class="hover:underline">Frank, Kenneth H.</a></li>
+                        <li><a href="#" class="hover:underline">McGlade, JM</a></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Main Results List -->
+            <main class="flex-1 bg-white border border-gray-200 rounded p-4 shadow-sm">
+                <div class="text-xs text-gray-600 mb-4 pb-2 border-b flex justify-between items-center">
+                    <span>You searched: <strong>"marine ecology"</strong> returned 3 results.</span>
+                    <select class="border border-gray-300 rounded px-2 py-1 text-xs">
+                        <option>Sort by: Relevance</option>
+                        <option>Publication Date: Newest to Oldest</option>
+                        <option>Author (A-Z)</option>
+                    </select>
+                </div>
+
+                <!-- Result Items -->
+                <div class="space-y-6">
+                    <!-- Item 1 -->
+                    <div class="flex border-b border-gray-100 pb-4 gap-4">
+                        <input type="checkbox" class="mt-1">
+                        <div class="flex-1">
+                            <h3 class="font-bold text-blue-700 text-base hover:underline"><a href="#">Watersheds, bays and bounded seas</a></h3>
+                            <p class="text-xs text-gray-600 mt-0.5"><strong>Publication:</strong> Washington (D.C.): Island Press, 2010. 280 p.</p>
+                            <p class="text-xs text-emerald-700 mt-1 font-medium">Availability: Copies available (1) at NORSU Siaton Library [2010.331.F]</p>
+                            <div class="mt-2 text-xs text-blue-600 space-x-3">
+                                <a href="#" onclick="switchTab('scan-request')" class="hover:underline">📄 Request Digital Scan</a>
+                                <a href="#" class="hover:underline">➕ Add to Cart</a>
+                                <a href="#" class="hover:underline">⭐ Save to list</a>
+                            </div>
+                        </div>
+                        <div class="w-16 h-22 bg-blue-100 flex items-center justify-center text-[10px] text-blue-800 font-semibold border rounded shadow-sm text-center p-1">
+                            COVER IMAGE
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="flex border-b border-gray-100 pb-4 gap-4">
+                        <input type="checkbox" class="mt-1">
+                        <div class="flex-1">
+                            <h3 class="font-bold text-blue-700 text-base hover:underline"><a href="#">The northern Adriatic ecosystems</a></h3>
+                            <p class="text-xs text-gray-600 mt-0.5"><strong>Publication:</strong> New York: Columbia University Press, 2007. 312 p.</p>
+                            <p class="text-xs text-red-600 mt-1 font-medium">Availability: No physical items available. Digital chapter scans available.</p>
+                            <div class="mt-2 text-xs text-blue-600 space-x-3">
+                                <a href="#" onclick="switchTab('scan-request')" class="hover:underline">📄 Request Digital Scan</a>
+                                <a href="#" class="hover:underline">➕ Add to Cart</a>
+                                <a href="#" class="hover:underline">⭐ Save to list</a>
+                            </div>
+                        </div>
+                        <div class="w-16 h-22 bg-amber-100 flex items-center justify-center text-[10px] text-amber-800 font-semibold border rounded shadow-sm text-center p-1">
+                            COVER IMAGE
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="flex border-b border-gray-100 pb-4 gap-4">
+                        <input type="checkbox" class="mt-1">
+                        <div class="flex-1">
+                            <h3 class="font-bold text-blue-700 text-base hover:underline"><a href="#">Marine Biodiversity & Preservation</a></h3>
+                            <p class="text-xs text-gray-600 mt-0.5"><strong>Publication:</strong> Dordrecht: Springer, 2009. 410 p.</p>
+                            <p class="text-xs text-emerald-700 mt-1 font-medium">Availability: Copies available (2) at NORSU Siaton Library</p>
+                            <div class="mt-2 text-xs text-blue-600 space-x-3">
+                                <a href="#" onclick="switchTab('scan-request')" class="hover:underline">📄 Request Digital Scan</a>
+                                <a href="#" class="hover:underline">➕ Add to Cart</a>
+                                <a href="#" class="hover:underline">⭐ Save to list</a>
+                            </div>
+                        </div>
+                        <div class="w-16 h-22 bg-emerald-100 flex items-center justify-center text-[10px] text-emerald-800 font-semibold border rounded shadow-sm text-center p-1">
+                            COVER IMAGE
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 5: SCAN REQUEST FORM ==================== -->
+    <section id="sec-scan-request" class="hidden max-w-3xl mx-auto px-6 py-12">
+      <div class="bg-white p-6 sm:p-8 rounded-xl shadow-md border border-slate-200 space-y-6">
+        <div>
+          <h2 class="font-heading text-xl sm:text-2xl font-bold text-slate-900 border-b-2 border-norsuBlue pb-2">Digital Document / Chapter Request</h2>
+          <p class="text-xs text-slate-600 mt-1">Academic reference materials are provided via scanned copies sent to your email or Messenger per library policy.</p>
+        </div>
+
+        <form id="scanForm" onsubmit="handleScanSubmit(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Book Title / Call Number</label>
+            <input type="text" id="scan-book-title" required placeholder="e.g., Systems Analysis and Design (QA 76.9)" class="w-full px-3 py-2 text-sm border rounded focus:ring-2 focus:ring-norsuBlue outline-none">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Chapters / Excerpt Needed</label>
+            <input type="text" required placeholder="e.g., Chapter 3 (Pages 45-60)" class="w-full px-3 py-2 text-sm border rounded focus:ring-2 focus:ring-norsuBlue outline-none">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Official Email or Contact Handle</label>
+            <input type="text" required placeholder="username@norsu.edu.ph or Messenger ID" class="w-full px-3 py-2 text-sm border rounded focus:ring-2 focus:ring-norsuBlue outline-none">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Purpose of Research</label>
+            <textarea rows="2" placeholder="Briefly state your academic topic..." class="w-full px-3 py-2 text-sm border rounded focus:ring-2 focus:ring-norsuBlue outline-none"></textarea>
+          </div>
+
+          <button type="submit" class="w-full bg-norsuBlue text-white font-bold py-2.5 rounded text-xs uppercase tracking-wider hover:bg-norsuDarkBlue transition">
+            Submit Scan Request
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 6: PATRON LOGIN ==================== -->
+    <section id="sec-login" class="hidden max-w-md mx-auto px-6 py-16">
+      <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200 space-y-6">
+        <div class="text-center space-y-1">
+          <span class="text-xs font-bold text-norsuBlue uppercase tracking-wider">Patron Portal</span>
+          <h2 class="font-heading text-2xl font-bold text-slate-900">Student & Faculty Login</h2>
+          <p class="text-xs text-slate-500">Access your active loans, holds, and scan requests</p>
+        </div>
+
+        <form onsubmit="handleLogin(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Email Address</label>
+            <input type="email" required placeholder="user@norsu.edu.ph" class="w-full px-3 py-2 text-sm border rounded focus:ring-2 focus:ring-norsuBlue outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Password</label>
+            <input type="password" required placeholder="••••••••" class="w-full px-3 py-2 text-sm border rounded focus:ring-2 focus:ring-norsuBlue outline-none">
+          </div>
+          <button type="submit" class="w-full bg-siatonGreen text-white font-bold py-2.5 rounded text-xs uppercase tracking-wider hover:bg-siatonGreenHover transition">
+            Login to Patron Account
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 7: MY ACCOUNT ==================== -->
+    <section id="sec-account" class="hidden max-w-5xl mx-auto px-6 py-12 space-y-6">
+      <div class="bg-white p-6 rounded-lg border border-slate-200 flex justify-between items-center">
+        <div>
+          <h2 class="font-heading text-xl font-bold text-slate-900">Registered Patron Account</h2>
+          <p class="text-xs text-slate-600">NORSU Siaton Campus Community Member</p>
+        </div>
+        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded">Active Patron</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white p-5 rounded-lg border border-slate-200 space-y-3">
+          <h3 class="font-heading font-bold text-norsuBlue text-sm uppercase tracking-wider">Active Book Holds (Fiction)</h3>
+          <div id="account-holds" class="text-xs text-slate-600 space-y-2">
+            <p class="italic text-slate-400">No active book holds placed.</p>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-lg border border-slate-200 space-y-3">
+          <h3 class="font-heading font-bold text-norsuBlue text-sm uppercase tracking-wider">Pending Chapter Scans</h3>
+          <div id="account-scans" class="text-xs text-slate-600 space-y-2">
+            <p class="italic text-slate-400">No active digital scan requests.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 8: EXCLUSIVE ADMIN DASHBOARD ==================== -->
+    <section id="sec-admin" class="hidden max-w-7xl mx-auto px-6 py-12 space-y-6">
+      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b pb-4 gap-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <h2 class="font-heading text-2xl font-bold text-slate-900">Librarian Administrative Portal</h2>
+            <span class="bg-emerald-800 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">Authenticated</span>
+          </div>
+          <p class="text-xs text-slate-500">Campus Librarian: Charlton M. Raga (Licensed Professional)</p>
+        </div>
+        <button onclick="logoutAdmin()" class="bg-rose-700 text-white font-bold text-xs px-4 py-2 rounded hover:bg-rose-800 transition self-start sm:self-auto flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+          <span>Exit Admin Session</span>
+        </button>
+      </div>
+
+      <!-- Quick Metrics Overview -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded border border-slate-200 shadow-sm">
+          <span class="text-[11px] text-slate-500 uppercase font-bold block">Total Print Volumes</span>
+          <span class="font-heading text-2xl font-black text-norsuBlue">7,000+</span>
+        </div>
+        <div class="bg-white p-4 rounded border border-slate-200 shadow-sm">
+          <span class="text-[11px] text-slate-500 uppercase font-bold block">Scan Queue</span>
+          <span class="font-heading text-2xl font-black text-amber-600" id="admin-pending-scans">1</span>
+        </div>
+        <div class="bg-white p-4 rounded border border-slate-200 shadow-sm">
+          <span class="text-[11px] text-slate-500 uppercase font-bold block">Fiction Holds</span>
+          <span class="font-heading text-2xl font-black text-emerald-700" id="admin-pending-holds">0</span>
+        </div>
+        <div class="bg-white p-4 rounded border border-slate-200 shadow-sm">
+          <span class="text-[11px] text-slate-500 uppercase font-bold block">PC Stations</span>
+          <span class="font-heading text-2xl font-black text-purple-700">20</span>
+        </div>
+      </div>
+
+      <!-- Admin Management Tabs Navigation -->
+      <div class="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm">
+        <div class="bg-slate-100 border-b border-slate-200 flex flex-wrap text-xs font-bold text-slate-700">
+          <button onclick="switchAdminTab('koha-modules')" id="admTab-koha-modules" class="px-5 py-3 bg-white text-norsuBlue border-b-2 border-norsuBlue">Koha Modules (Image 1 View)</button>
+          <button onclick="switchAdminTab('scan-queue')" id="admTab-scan-queue" class="px-5 py-3 hover:text-norsuBlue transition border-b-2 border-transparent">Scan Fulfillment Queue</button>
+          <button onclick="switchAdminTab('cataloging')" id="admTab-cataloging" class="px-5 py-3 hover:text-norsuBlue transition border-b-2 border-transparent">Cataloging (MARC21 / AI)</button>
+          <button onclick="switchAdminTab('patrons')" id="admTab-patrons" class="px-5 py-3 hover:text-norsuBlue transition border-b-2 border-transparent">Patron Management</button>
+          <button onclick="switchAdminTab('circulation')" id="admTab-circulation" class="px-5 py-3 hover:text-norsuBlue transition border-b-2 border-transparent">Circulation Desk</button>
+        </div>
+
+        <div class="p-6">
+          
+          <!-- SUB-PANEL 0: KOHA MAIN MODULE GRID (INPIRED BY IMAGE 1) -->
+          <div id="admSec-koha-modules" class="space-y-4">
+            <!-- Admin Top Navigation & Barcode Header -->
+            <div class="bg-slate-100 p-4 border border-gray-300 rounded-md">
+                <div class="max-w-4xl">
+                    <label class="block text-xs text-gray-600 mb-1">Enter patron card number or partial name:</label>
+                    <div class="flex space-x-2">
+                        <input type="text" placeholder="Barcode or Name..." class="flex-1 border border-gray-400 rounded px-3 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500">
+                        <button class="bg-gray-200 hover:bg-gray-300 border border-gray-400 text-gray-800 px-4 py-1.5 text-xs rounded font-medium">Submit</button>
+                    </div>
+                    <!-- Action Tabs -->
+                    <div class="flex space-x-1 mt-3 text-xs">
+                        <button class="bg-white border border-b-0 border-gray-300 font-bold text-gray-800 px-3 py-1.5 rounded-t">Check out</button>
+                        <button class="bg-gray-200 hover:bg-white text-blue-700 px-3 py-1.5 rounded-t">Check in</button>
+                        <button class="bg-gray-200 hover:bg-white text-blue-700 px-3 py-1.5 rounded-t">Renew</button>
+                        <button class="bg-gray-200 hover:bg-white text-blue-700 px-3 py-1.5 rounded-t">Search patrons</button>
+                        <button class="bg-gray-200 hover:bg-white text-blue-700 px-3 py-1.5 rounded-t">Search the catalog</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Module Grid (Image 1) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                <div onclick="switchAdminTab('circulation')" class="flex items-center space-x-4 p-3 bg-white border border-slate-300 rounded-lg shadow-sm hover:shadow-md hover:border-blue-400 transition cursor-pointer">
+                    <i data-lucide="repeat" class="w-7 h-7 text-slate-700"></i>
+                    <span class="text-base font-bold text-slate-800">Circulation</span>
+                </div>
+                <div class="flex items-center space-x-4 p-3 bg-white border border-slate-300 rounded-lg shadow-sm hover:shadow-md hover:border-blue-400 transition cursor-pointer">
+                    <i data-lucide="newspaper" class="w-7 h-7 text-slate-700"></i>
+                    <span class="text-base font-bold text-slate-800">Serials</span>
+                </div>
+                <div onclick="switchAdminTab('patrons')" class="flex items-center space-x-4 p-3 bg-white border border-slate-300 rounded-lg shadow-sm hover:shadow-md hover:border-blue-400 transition cursor-pointer">
+                    <i data-lucide="user" class="w-7 h-7 text-slate-700"></i>
+                    <span class="text-base font-bold text-slate-800">Patrons</span>
+                </div>
+                <div class="flex items-center space-x-4 p-3 bg-white border border-slate-300 rounded-lg shadow-sm hover:shadow-md hover:border-blue-400 transition cursor-pointer">
+                    <i data-lucide="gift" class="w-7 h-7 text-slate-700"></i>
+                    <span class="text-base font-bold text-slate-800">Acquisitions</span>
+                </div>
+                <div onclick="switchTab('opac')" class="flex items-center space-x-4 p-3 bg-white border border-slate-300 rounded-lg shadow-sm hover:shadow-md hover:border-blue-400 transition cursor-pointer">
+                    <i data-lucide="search" class="w-7 h-7 text-slate-700"></i>
+                    <span class="text-base font-bold text-slate-800">Advanced search</span>
+                </div>
+                <div class="flex items-center space-x-4 p-3 bg-white border border-slate-300 rounded-lg shadow-sm hover:shadow-md hover:border-blue-400 transition cursor-pointer">
+                    <i data-lucide="pie-chart" class="w-7 h-7 text-slate-700"></i>
+                    <span class="text-base font-bold text-slate-800">Reports</span>
+                </div>
+                <div class="flex items-center space-x-4 p-3 bg-white border border-slate-300 rounded-lg shadow-sm hover:shadow-md hover:border-blue-400 transition cursor-pointer">
+                    <i data-lucide="folder" class="w-7 h-7 text-slate-700"></i>
+                    <span class="text-base font-bold text-slate-800">Lists</span>
+                </div>
+                <div class="flex items-center space-x-4 p-3 bg-white border border-slate-300 rounded-lg shadow-sm hover:shadow-md hover:border-blue-400 transition cursor-pointer">
+                    <i data-lucide="wrench" class="w-7 h-7 text-slate-700"></i>
+                    <span class="text-base font-bold text-slate-800">Tools</span>
+                </div>
+                <div onclick="switchAdminTab('cataloging')" class="flex items-center space-x-4 p-3 bg-white border border-slate-300 rounded-lg shadow-sm hover:shadow-md hover:border-blue-400 transition cursor-pointer">
+                    <i data-lucide="tag" class="w-7 h-7 text-slate-700"></i>
+                    <span class="text-base font-bold text-slate-800">Cataloging</span>
+                </div>
+                <div class="flex items-center space-x-4 p-3 bg-white border border-slate-300 rounded-lg shadow-sm hover:shadow-md hover:border-blue-400 transition cursor-pointer">
+                    <i data-lucide="settings" class="w-7 h-7 text-slate-700"></i>
+                    <span class="text-base font-bold text-slate-800">Koha administration</span>
+                </div>
+                <div class="flex items-center space-x-4 p-3 bg-white border border-slate-300 rounded-lg shadow-sm hover:shadow-md hover:border-blue-400 transition cursor-pointer">
+                    <i data-lucide="link" class="w-7 h-7 text-slate-700"></i>
+                    <span class="text-base font-bold text-slate-800">Authorities</span>
+                </div>
+                <div onclick="switchTab('about')" class="flex items-center space-x-4 p-3 bg-white border border-slate-300 rounded-lg shadow-sm hover:shadow-md hover:border-blue-400 transition cursor-pointer">
+                    <i data-lucide="info" class="w-7 h-7 text-slate-700"></i>
+                    <span class="text-base font-bold text-slate-800">About Koha</span>
+                </div>
+            </div>
+          </div>
+
+          <!-- SUB-PANEL 1: SCAN QUEUE -->
+          <div id="admSec-scan-queue" class="hidden space-y-4">
+            <h3 class="font-heading font-bold text-slate-900 text-sm">Digital Document Scan Request Dispatch</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-slate-700">
+                <thead class="bg-slate-100 text-slate-900 uppercase font-bold border-b">
+                  <tr>
+                    <th class="p-3">Patron Contact</th>
+                    <th class="p-3">Book Requested</th>
+                    <th class="p-3">Chapter / Excerpt</th>
+                    <th class="p-3">Status</th>
+                    <th class="p-3 text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-scan-table">
+                  <tr class="border-b">
+                    <td class="p-3">student@norsu.edu.ph</td>
+                    <td class="p-3 font-semibold">Systems Analysis and Design</td>
+                    <td class="p-3">Chapter 4 (DFD Diagrams)</td>
+                    <td class="p-3"><span class="bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded">Pending Review</span></td>
+                    <td class="p-3 text-right">
+                      <button onclick="dispatchEmailScan(this)" class="bg-emerald-700 text-white font-bold px-3 py-1 rounded hover:bg-emerald-800">
+                        Dispatch Scanned Copy
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- SUB-PANEL 2: CATALOGING -->
+          <div id="admSec-cataloging" class="hidden space-y-4">
+            <div class="flex justify-between items-center border-b pb-2">
+              <h3 class="font-heading font-bold text-slate-900 text-sm">MARC21 Bibliographic Entry (AI-Assisted Cataloging)</h3>
+              <span class="text-[10px] text-slate-500 font-mono">Status: Ready for Indexing</span>
+            </div>
+
+            <form onsubmit="handleAddCatalogItem(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Book Title (MARC 245a)</label>
+                <input type="text" required placeholder="e.g., Introduction to Algorithms" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-norsuBlue outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Author / Statement of Resp. (MARC 100a)</label>
+                <input type="text" required placeholder="e.g., Thomas H. Cormen" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-norsuBlue outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Call Number / Classification</label>
+                <input type="text" required placeholder="e.g., QA 76.6 .C66 2022" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-norsuBlue outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">ISBN / Barcode</label>
+                <input type="text" required placeholder="e.g., 9780262033848" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-norsuBlue outline-none">
+              </div>
+              <div class="md:col-span-2 pt-2">
+                <button type="submit" class="bg-norsuBlue text-white font-bold px-6 py-2 rounded uppercase text-xs tracking-wider hover:bg-norsuDarkBlue transition">
+                  Save Record to Koha Catalog
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- SUB-PANEL 3: PATRONS -->
+          <div id="admSec-patrons" class="hidden space-y-4">
+            <h3 class="font-heading font-bold text-slate-900 text-sm">Patron Directory & Verification</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-slate-700">
+                <thead class="bg-slate-100 text-slate-900 uppercase font-bold border-b">
+                  <tr>
+                    <th class="p-3">Patron ID</th>
+                    <th class="p-3">Institutional Role</th>
+                    <th class="p-3">Contact Email</th>
+                    <th class="p-3">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-b">
+                    <td class="p-3 font-mono">2026-SIATON-0101</td>
+                    <td class="p-3 font-semibold">Student Patron</td>
+                    <td class="p-3">patron@norsu.edu.ph</td>
+                    <td class="p-3"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">Verified ID</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- SUB-PANEL 4: CIRCULATION -->
+          <div id="admSec-circulation" class="hidden space-y-4">
+            <h3 class="font-heading font-bold text-slate-900 text-sm">Circulation Desk (Fiction Borrowing & Returns)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 border rounded bg-slate-50 space-y-3">
+                <h4 class="font-bold text-norsuBlue text-xs uppercase">Check-Out Novel / Fiction</h4>
+                <input type="text" placeholder="Enter Patron ID / Barcode..." class="w-full px-3 py-1.5 border rounded text-xs outline-none">
+                <input type="text" placeholder="Enter Book Call # / Barcode..." class="w-full px-3 py-1.5 border rounded text-xs outline-none">
+                <button onclick="alert('7-day fiction loan processed successfully.')" class="bg-siatonGreen text-white font-bold px-4 py-1.5 rounded text-xs hover:bg-siatonGreenHover">
+                  Process 7-Day Checkout
+                </button>
+              </div>
+
+              <div class="p-4 border rounded bg-slate-50 space-y-3">
+                <h4 class="font-bold text-norsuBlue text-xs uppercase">Check-In Return</h4>
+                <input type="text" placeholder="Scan Returned Item Barcode..." class="w-full px-3 py-1.5 border rounded text-xs outline-none">
+                <button onclick="alert('Book returned and restored to shelf inventory.')" class="bg-norsuBlue text-white font-bold px-4 py-1.5 rounded text-xs hover:bg-norsuDarkBlue">
+                  Check-In Return Item
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== LIBRARIAN AUTHENTICATION MODAL ==================== -->
+  <div id="adminModal" class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl border-2 border-norsuBlue max-w-sm w-full p-6 space-y-4 relative animate-fade-in">
+      <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold">✕</button>
+      
+      <div class="text-center space-y-1">
+        <div class="w-12 h-12 bg-norsuBlue/10 text-norsuBlue rounded-full flex items-center justify-center mx-auto">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        </div>
+        <h3 class="font-heading text-xl font-bold text-slate-900">Restricted Admin Portal</h3>
+        <p class="text-xs text-slate-500">Authorized NORSU Siaton Library Staff Only</p>
+      </div>
+
+      <form onsubmit="verifyAdminAuth(event)" class="space-y-3">
+        <div>
+          <label class="block text-[11px] font-bold uppercase text-slate-700 mb-1">Staff ID / Username</label>
+          <input type="text" id="admin-user" required placeholder="e.g., ragaC or admin" class="w-full px-3 py-2 text-xs border rounded focus:ring-2 focus:ring-norsuBlue outline-none">
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold uppercase text-slate-700 mb-1">Passcode / PIN</label>
+          <input type="password" id="admin-pass" required placeholder="••••••••" class="w-full px-3 py-2 text-xs border rounded focus:ring-2 focus:ring-norsuBlue outline-none">
+          <p class="text-[10px] text-slate-400 mt-1">Demo Staff Passcode: <span class="font-mono font-bold text-norsuBlue">norsu2026</span></p>
+        </div>
+
+        <div id="admin-auth-error" class="hidden text-rose-600 text-[11px] font-semibold text-center">
+          Invalid staff credentials. Access denied.
+        </div>
+
+        <button type="submit" class="w-full bg-emerald-700 text-white font-bold py-2.5 rounded text-xs uppercase tracking-wider hover:bg-emerald-800 transition">
+          Authenticate & Launch Portal
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="bg-norsuBlue text-white text-xs py-6 border-t-4 border-norsuYellow mt-auto">
+    <div class="max-w-7xl mx-auto px-6 text-center space-y-1">
+      <p class="font-bold uppercase tracking-wider text-norsuYellow">Negros Oriental State University — Siaton Campus Library</p>
+      <p class="text-slate-200">Siaton, Negros Oriental • Managed by Charlton M. Raga, Campus Librarian</p>
+    </div>
+  </footer>
+
+  <!-- ==================== JAVASCRIPT CONTROLLER ==================== -->
+  <script>
+    let isAdminAuthenticated = false;
+
+    // Initialize Lucide Icons
+    window.addEventListener('DOMContentLoaded', () => {
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    });
+
+    // Toggle Mobile Navigation Drawer
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    // Switch Main Tabs
+    function switchTab(tabId) {
+      if (tabId === 'admin' && !isAdminAuthenticated) {
+        openAdminModal();
+        return;
+      }
+
+      const tabs = ['home', 'about', 'policy', 'opac', 'scan-request', 'login', 'account', 'admin'];
+      
+      tabs.forEach(t => {
+        const sec = document.getElementById(`sec-${t}`);
+        if (sec) sec.classList.add('hidden');
+        
+        const navBtn = document.getElementById(`nav-${t}`);
+        if (navBtn) {
+          navBtn.className = "hover:text-norsuYellow transition border-b-2 border-transparent pb-0.5";
+        }
+      });
+
+      document.getElementById(`sec-${tabId}`).classList.remove('hidden');
+      const activeBtn = document.getElementById(`nav-${tabId}`);
+      if (activeBtn && !['login', 'admin'].includes(tabId)) {
+        activeBtn.className = "hover:text-norsuYellow transition border-b-2 border-norsuYellow text-norsuYellow font-bold pb-0.5";
+      }
+    }
+
+    // Modal Control for Admin Gate
+    function openAdminModal() {
+      if (isAdminAuthenticated) {
+        switchTab('admin');
+      } else {
+        document.getElementById('adminModal').classList.remove('hidden');
+      }
+    }
+
+    function closeAdminModal() {
+      document.getElementById('adminModal').classList.add('hidden');
+      document.getElementById('admin-auth-error').classList.add('hidden');
+    }
+
+    // Verify Admin Credentials
+    function verifyAdminAuth(e) {
+      e.preventDefault();
+      const pass = document.getElementById('admin-pass').value;
+      
+      // Demo password check (Accepts "norsu2026" or "raga2026")
+      if (pass === 'norsu2026' || pass === 'raga2026') {
+        isAdminAuthenticated = true;
+        closeAdminModal();
+        switchTab('admin');
+      } else {
+        document.getElementById('admin-auth-error').classList.remove('hidden');
+      }
+    }
+
+    // Logout Admin
+    function logoutAdmin() {
+      isAdminAuthenticated = false;
+      alert('Admin session terminated.');
+      switchTab('home');
+    }
+
+    // Admin Sub-Tab Switcher
+    function switchAdminTab(subTabId) {
+      const subTabs = ['koha-modules', 'scan-queue', 'cataloging', 'patrons', 'circulation'];
+      
+      subTabs.forEach(s => {
+        const sec = document.getElementById(`admSec-${s}`);
+        if (sec) sec.classList.add('hidden');
+        
+        const btn = document.getElementById(`admTab-${s}`);
+        if (btn) {
+          btn.className = "px-5 py-3 hover:text-norsuBlue transition border-b-2 border-transparent";
+        }
+      });
+
+      document.getElementById(`admSec-${subTabId}`).classList.remove('hidden');
+      const activeTab = document.getElementById(`admTab-${subTabId}`);
+      if (activeTab) {
+        activeTab.className = "px-5 py-3 bg-white text-norsuBlue border-b-2 border-norsuBlue font-bold";
+      }
+    }
+
+    function simulateKohaSearch() {
+      const query = document.getElementById('koha-global-input').value;
+      if (query.trim() === '') {
+        alert('Please enter a query to search the Koha catalog.');
+      } else {
+        alert(`Querying Koha ILS database for: "${query}"... 3 records found.`);
+      }
+    }
+
+    function handleScanSubmit(e) {
+      e.preventDefault();
+      const book = document.getElementById('scan-book-title').value;
+      const scansContainer = document.getElementById('account-scans');
+      scansContainer.innerHTML = `
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded flex justify-between items-center">
+          <div>
+            <p class="font-bold text-slate-800">${book}</p>
+            <p class="text-[10px] text-slate-500">Scanned Copy Request Pending Librarian Review</p>
+          </div>
+          <span class="bg-amber-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">Processing</span>
+        </div>
+      `;
+      alert('Scan request submitted successfully!');
+      switchTab('account');
+    }
+
+    function handleAddCatalogItem(e) {
+      e.preventDefault();
+      alert('New bibliographic record saved to local Koha MARC21 database!');
+      switchAdminTab('scan-queue');
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      alert('Welcome! Logged into NORSU Siaton Library Patron Portal.');
+      switchTab('account');
+    }
+
+    function dispatchEmailScan(btn) {
+      const row = btn.closest('tr');
+      row.cells[3].innerHTML = `<span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">Scanned Copy Sent</span>`;
+      btn.className = "bg-slate-300 text-slate-600 font-bold px-3 py-1 rounded cursor-not-allowed";
+      btn.innerText = "Dispatched";
+      btn.disabled = true;
+
+      let count = parseInt(document.getElementById('admin-pending-scans').innerText);
+      if (count > 0) document.getElementById('admin-pending-scans').innerText = count - 1;
+    }
+  </script>
+</body>
+</html>
